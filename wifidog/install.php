@@ -1,6 +1,8 @@
 <?php
 
-/* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
+error_reporting(error_reporting() & ~E_STRICT);
+
+include_once 'config.php';
 
 // +-------------------------------------------------------------------+
 // | WiFiDog Authentication Server                                     |
@@ -75,7 +77,7 @@ $fd = fopen($password_file, "rb");
 $password = trim(fread($fd, filesize($password_file)));
 fclose($fd);
 
-$auth = false;
+$auth = true;
 
 if ($page != 'Welcome') {
     if (isset ($_SERVER['PHP_AUTH_PW'])) {
@@ -237,13 +239,11 @@ TODO:  SSL is now configured in the DB, but should still be handled by the insta
 )
 );
 
-
-
 $CONFIG_FILE = 'config.php';
 $LOCAL_CONFIG_FILE = 'local.config.php';
 
 if (!empty ($config)) # If not empty, save javascript 'config' variable to config.php file
-saveConfig($config);
+//saveConfig($config);
 
 ### Read Configuration file. Keys and Values => define('FOO', 'BRAK');
 # Use config.php if local.config.php does not exist
@@ -254,31 +254,31 @@ $contentArray = file(WIFIDOG_ABS_FILE_PATH . "$CONFIG_FILE");
 
 $configArray = array ();
 
-foreach ($contentArray as $line) {
-    #print "$line<BR>"; # Debug
-    if (preg_match("/^define\((.+)\);/", $line, $matchesArray)) {
-        //echo '<pre>';print_r($matchesArray);echo '</pre>';
-        list ($key, $value) = explode(',', $matchesArray[1]);
-        $pattern = array (
-        "/^'/",
-        "/'$/"
-        );
-        $replacement = array (
-        '',
-        ''
-        );
-        $key = preg_replace($pattern, $replacement, trim($key));
-        $value = preg_replace($pattern, $replacement, trim($value));
-        $configArray[$key] = $value;
-    }
-}
+//foreach ($contentArray as $line) {
+//    #print "$line<BR>"; # Debug
+//    if (preg_match("/^define\((.+)\);/", $line, $matchesArray)) {
+//        //echo '<pre>';print_r($matchesArray);echo '</pre>';
+//        list ($key, $value) = explode(',', $matchesArray[1]);
+//        $pattern = array (
+//        "/^'/",
+//        "/'$/"
+//        );
+//        $replacement = array (
+//        '',
+//        ''
+//        );
+//        $key = preg_replace($pattern, $replacement, trim($key));
+//        $value = preg_replace($pattern, $replacement, trim($value));
+//        $configArray[$key] = $value;
+//    }
+//}
 //echo '<pre>';print_r($configArray);echo '</pre>';
 # Database connections variables
-$CONF_DATABASE_HOST = $configArray['CONF_DATABASE_HOST'];
-$CONF_DATABASE_PORT = $configArray['CONF_DATABASE_PORT'];
-$CONF_DATABASE_NAME = $configArray['CONF_DATABASE_NAME'];
-$CONF_DATABASE_USER = $configArray['CONF_DATABASE_USER'];
-$CONF_DATABASE_PASSWORD = $configArray['CONF_DATABASE_PASSWORD'];
+$CONF_DATABASE_HOST = CONF_DATABASE_HOST;
+$CONF_DATABASE_PORT = CONF_DATABASE_PORT;
+$CONF_DATABASE_NAME = CONF_DATABASE_NAME;
+$CONF_DATABASE_USER = CONF_DATABASE_USER;
+$CONF_DATABASE_PASSWORD = CONF_DATABASE_PASSWORD;
 
 //foreach($configArray as $key => $value) { print "K=$key V=$value<BR>"; } exit(); # DEBUG
 
@@ -622,9 +622,9 @@ EndHTML;
         $replacements[5] = '-- ';
         $replacements[6] = '::text';
 
-        $content_schema_array = file(WIFIDOG_ABS_FILE_PATH . "../sql/wifidog-postgres-schema.sql") or die("<em>Error</em>: Can not open $basepath/../sql/wifidog-postgres-schema.sql"); # Read SQL schema file
+        $content_schema_array = file(WIFIDOG_ABS_FILE_PATH . "sql/wifidog-postgres-schema.sql") or die("<em>Error</em>: Can not open $basepath/../sql/wifidog-postgres-schema.sql"); # Read SQL schema file
         $content_schema = implode("", $content_schema_array);
-        $content_data_array = file(WIFIDOG_ABS_FILE_PATH . "../sql/wifidog-postgres-initial-data.sql"); # Read SQL initial data file
+        $content_data_array = file(WIFIDOG_ABS_FILE_PATH . "sql/wifidog-postgres-initial-data.sql"); # Read SQL initial data file
         $content_data = implode("", $content_data_array);
 
         $db_schema_version = ''; # Schema version query from database
@@ -712,9 +712,9 @@ EndHTML;
 
 EndHTML;
 
-        //echo '<pre>';print_r($optionsInfo);echo '</pre>';
+        //echo '<pre>';print_r($optionsInfo); print_r($configArray); echo '</pre>';
         foreach ($optionsInfo as $name => $foo) { # Foreach generate all <table> fields
-            $value = $configArray[$name]; # Value of option in config.php
+            $value = 'false'; # Value of option in config.php
             $title = $optionsInfo[$name]['title']; # Field Title
             $message = $optionsInfo[$name]['message']; # Message why option is disabled
             if(empty($value))
@@ -937,7 +937,7 @@ EndHTML;
         </script>
 EndHTML;
 
-            print "<p><A HREF=\"#\" ONCLICK=\"javascript: submitValue(); window.location.reload(true);\" CLASS=\"submit\">Create User</A></p><br><br><br>\n";
+            print "<p><A HREF=\"#\" ONCLICK=\"javascript: submitValue(); \" CLASS=\"submit\">Create User</A></p><br><br><br>\n";
 
         }
 

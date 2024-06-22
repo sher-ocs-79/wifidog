@@ -71,16 +71,16 @@ if (file_exists(dirname(__FILE__) . "/local.config.php")) {
  */
 
 // Host of the database server.
-define('CONF_DATABASE_HOST', 'localhost');
+define('CONF_DATABASE_HOST', 'wifidog-auth-server-wifidog-db-1');
 
 // Port of the database server.
 define('CONF_DATABASE_PORT', '5432');
 
 // Username for database access.
-define('CONF_DATABASE_USER', 'wifidog');
+define('CONF_DATABASE_USER', 'postgres');
 
 // Password for database access.
-define('CONF_DATABASE_PASSWORD', 'wifidogtest');
+define('CONF_DATABASE_PASSWORD', 'r00t_user');
 
 // Name of database used by WiFiDOG auth server.
 define('CONF_DATABASE_NAME', 'wifidog');

@@ -1,5 +1,5 @@
 <?php
-
+error_reporting(error_reporting() & ~E_STRICT &  ~E_DEPRECATED);
 
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 

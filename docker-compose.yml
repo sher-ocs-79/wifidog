@@ -1,0 +1,37 @@
+version: '3.4'
+
+services:
+
+  wifidog-app:
+    image: 5.6-apache-rprprime
+    volumes:
+      - /Users/socubillo/Web/rprprime/wifidog-auth-server/wifidog:/var/www/html
+    ports:
+      - 80:80
+    networks:
+      - vm-network
+
+  wifidog-db:
+    image: postgres:9.4.26
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=r00t_user
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - /Users/socubillo/Web/rprprime/wifidog-auth-server/sql:/home
+    networks:
+      - vm-network
+
+  wifidog-admin:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - vm-network
+
+networks:
+  vm-network:
+
+volumes:
+  pgdata:
